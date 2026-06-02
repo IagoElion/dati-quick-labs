@@ -1,0 +1,6 @@
+{
+    "AccessLogSettings": {
+        "DestinationArn": "arn:aws:logs:us-east-1:601804669442:log-group:/aws/apigateway/partner-central-mcp",
+        "Format": "{\"requestId\":\"$context.requestId\",\"ip\":\"$context.identity.sourceIp\",\"method\":\"$context.httpMethod\",\"path\":\"$context.path\",\"status\":\"$context.status\",\"error\":\"$context.authorizer.error\",\"integrationError\":\"$context.integrationErrorMessage\"}"
+    }
+}

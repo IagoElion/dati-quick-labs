@@ -1,0 +1,10 @@
+{
+    "ApiId": "7hk7vz4tb3",
+    "AuthorizerType": "JWT",
+    "Name": "cognito-mcp-auth",
+    "IdentitySource": ["$request.header.Authorization"],
+    "JwtConfiguration": {
+        "Issuer": "https://cognito-idp.us-east-1.amazonaws.com/us-east-1_NNpv7hx2R",
+        "Audience": ["69dvq7gujmgmpk1cc2bvggciie"]
+    }
+}

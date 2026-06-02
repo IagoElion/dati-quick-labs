@@ -1,0 +1,7 @@
+{
+    "FunctionName": "partner-central-mcp-proxy",
+    "StatementId": "AllowPublicInvokeViaFunctionUrl",
+    "Action": "lambda:InvokeFunction",
+    "Principal": "*",
+    "FunctionUrlAuthType": "NONE"
+}
