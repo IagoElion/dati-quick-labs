@@ -1,0 +1,78 @@
+service: circleback-mcp-server
+
+provider:
+  name: aws
+  runtime: nodejs18.x
+  region: us-east-1
+  stage: ${opt:stage, 'prod'}
+  profile: dati-quick-labs
+  environment:
+    TOKEN_TABLE: ${self:service}-tokens-${self:provider.stage}
+    NODE_ENV: production
+    # Redirect URI gerada automaticamente a partir do API Gateway
+    CIRCLEBACK_REDIRECT_URI:
+      Fn::Sub: "https://${ApiGatewayRestApi}.execute-api.${AWS::Region}.amazonaws.com/${self:provider.stage}/oauth/callback"
+
+  iam:
+    role:
+      statements:
+        - Effect: Allow
+          Action:
+            - dynamodb:GetItem
+            - dynamodb:PutItem
+            - dynamodb:DeleteItem
+          Resource:
+            Fn::GetAtt: [TokensTable, Arn]
+
+functions:
+  api:
+    handler: src/index.handler
+    timeout: 30
+    memorySize: 256
+    events:
+      - http:
+          path: /{proxy+}
+          method: ANY
+          cors: true
+      - http:
+          path: /
+          method: ANY
+          cors: true
+
+resources:
+  Resources:
+    TokensTable:
+      Type: AWS::DynamoDB::Table
+      Properties:
+        TableName: ${self:service}-tokens-${self:provider.stage}
+        BillingMode: PAY_PER_REQUEST
+        AttributeDefinitions:
+          - AttributeName: userId
+            AttributeType: S
+        KeySchema:
+          - AttributeName: userId
+            KeyType: HASH
+        TimeToLiveSpecification:
+          AttributeName: ttl
+          Enabled: true
+
+  Outputs:
+    ApiUrl:
+      Description: URL base do MCP Server
+      Value:
+        Fn::Sub: "https://${ApiGatewayRestApi}.execute-api.${AWS::Region}.amazonaws.com/${self:provider.stage}"
+    TokensTableName:
+      Description: Nome da tabela DynamoDB de tokens
+      Value:
+        Ref: TokensTable
+
+package:
+  patterns:
+    - 'src/**'
+    - 'package.json'
+    - 'node_modules/**'
+    - '!node_modules/serverless/**'
+    - '!node_modules/serverless-offline/**'
+    - '!.git/**'
+    - '!.env*'
+    - '!docs/**'

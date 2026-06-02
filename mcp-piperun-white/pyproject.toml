@@ -1,0 +1,5 @@
+[project]
+name = "mcp-piperun-white"
+version = "1.0.0"
+description = "MCP Server white-label para PipeRun CRM - Lambda + Function URL com OAuth para QuickSight. Leitura e Escrita."
+requires-python = ">=3.13"

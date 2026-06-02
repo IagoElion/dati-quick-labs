@@ -1,0 +1,31 @@
+{
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Sid": "MCPProtocolAccess",
+            "Effect": "Allow",
+            "Action": ["partnercentral:UseSession"],
+            "Resource": "*",
+            "Condition": {
+                "Bool": { "aws:IsMcpServiceAction": "true" }
+            }
+        },
+        {
+            "Sid": "PartnerCentralReadOnly",
+            "Effect": "Allow",
+            "Action": ["partnercentral:List*", "partnercentral:Get*"],
+            "Resource": "*"
+        },
+        {
+            "Sid": "MarketplaceReadOnly",
+            "Effect": "Allow",
+            "Action": [
+                "aws-marketplace:DescribeEntity",
+                "aws-marketplace:DescribeAgreement",
+                "aws-marketplace:SearchAgreements",
+                "aws-marketplace:ListEntities"
+            ],
+            "Resource": "*"
+        }
+    ]
+}
